@@ -1,0 +1,30 @@
+[
+    {
+        "id": "1",
+        "isbn": "223344",
+        "title": "First Mov",
+        "director": {
+            "firstname": "Hidalgo",
+            "lastname": "Herrera"
+        }
+    },
+    {
+        "id": "2",
+        "isbn": "126349",
+        "title": "Dos Film",
+        "director": {
+            "firstname": "Armand",
+            "lastname": "Hitsumaki"
+        }
+    }
+]
+
+{
+    "id": "3",
+    "isbn": "998244",
+    "title": "Third Alien",
+    "director": {
+        "firstname": "Jim",
+        "lastname": "Spacer"
+    }
+}
