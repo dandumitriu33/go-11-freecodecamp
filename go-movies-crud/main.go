@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -24,6 +25,9 @@ var movies []Movie
 func main() {
 	r := mux.NewRouter()
 
+	movies = append(movies, Movie{ID: "1", Isbn: "223344", Title: "First Mov", Director: &Director{Firstname: "Hidalgo", Lastname: "Herrera"}})
+	movies = append(movies, Movie{ID: "2", Isbn: "126349", Title: "Dos Film", Director: &Director{Firstname: "Armand", Lastname: "Hitsumaki"}})
+
 	r.HandleFunc("/movies", getMovies).Methods("GET")
 	r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 	r.HandleFunc("/movies", createMovie).Methods("POST")
@@ -36,7 +40,8 @@ func main() {
 }
 
 func getMovies(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(movies)
 }
 
 func getMovie(w http.ResponseWriter, r *http.Request) {
