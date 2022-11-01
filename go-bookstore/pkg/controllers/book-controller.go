@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"go-bookstore/pkg/models"
 	"go-bookstore/pkg/utils"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/prometheus/common/log"
 )
 
 var NewBook models.Book
@@ -26,7 +26,7 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	bookId := vars["bookId"]
 	ID, err := strconv.ParseInt(bookId, 0, 0)
 	if err != nil {
-		log.Errorf("error while parsing %v", err)
+		log.Printf("error while parsing %v", err)
 	}
 	bookDetails, _ := models.GetBookById(ID)
 	res, _ := json.Marshal(bookDetails)
@@ -50,10 +50,38 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	bookId := vars["bookId"]
 	ID, err := strconv.ParseInt(bookId, 0, 0)
 	if err != nil {
-		log.Errorf("error while parsing %v", err)
+		log.Printf("error while parsing %v", err)
 	}
 	book := models.DeleteBook(ID)
 	res, _ := json.Marshal(book)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func UpdateBook(w http.ResponseWriter, r *http.Request) {
+	var updateBook = &models.Book{}
+	utils.ParseBody(r, updateBook)
+	vars := mux.Vars(r)
+	bookId := vars["bookId"]
+	ID, err := strconv.ParseInt(bookId, 0, 0)
+	if err != nil {
+		log.Printf("error while parsing %v", err)
+	}
+
+	booksDetails, db := models.GetBookById(ID)
+	if updateBook.Name != "" {
+		booksDetails.Name = updateBook.Name
+	}
+	if updateBook.Author != "" {
+		booksDetails.Author = updateBook.Author
+	}
+	if updateBook.Publication != "" {
+		booksDetails.Publication = updateBook.Publication
+	}
+	db.Save(&booksDetails)
+
+	res, _ := json.Marshal(booksDetails)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
