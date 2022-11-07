@@ -1,0 +1,32 @@
+[
+    {
+        "id": "63678017ea7b7ce5d35cf2c4",
+        "name": "John Smith",
+        "salary": 123.5,
+        "age": 29
+    },
+    {
+        "id": "6367804bea7b7ce5d35cf2c5",
+        "name": "Mike Smith",
+        "salary": 400.25,
+        "age": 36
+    },
+    {
+        "id": "6367806aea7b7ce5d35cf2c6",
+        "name": "Pete Smith",
+        "salary": 400.75,
+        "age": 36
+    },
+    {
+        "id": "636781bcbfdf95ff6dadb424",
+        "name": "Anna Smith",
+        "salary": 120.25,
+        "age": 41
+    },
+    {
+        "id": "6367820fc2d65b5cf8e45578",
+        "name": "Jim Smith",
+        "salary": 120.25,
+        "age": 41
+    }
+]
