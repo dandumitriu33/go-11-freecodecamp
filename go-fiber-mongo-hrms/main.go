@@ -20,10 +20,10 @@ type MongoInstance struct {
 var mg MongoInstance
 
 const dbName = "fiber-hrms"
-const mongoURI = "mongodb://localhost:27017" + dbName
+const mongoURI = "mongodb://localhost:27017/" + dbName
 
 type Employee struct {
-	ID     string  `json:"id,omitempty" bson:"_id, omitempty`
+	ID     string  `json:"id,omitempty" bson:"_id,omitempty"`
 	Name   string  `json:"name"`
 	Salary float64 `json:"salary"`
 	Age    float64 `json:"age"`
@@ -56,16 +56,20 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/employee", func(c *fiber.Ctx) error {
+
 		query := bson.D{{}}
+
 		cursor, err := mg.Db.Collection("employees").Find(c.Context(), query)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
 
 		var employees []Employee = make([]Employee, 0)
+
 		if err := cursor.All(c.Context(), &employees); err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
+
 		return c.JSON(employees)
 	})
 
@@ -95,6 +99,7 @@ func main() {
 		return c.Status(201).JSON(createdEmployee)
 
 	})
+
 	app.Put("/employee/:id", func(c *fiber.Ctx) error {
 		idParam := c.Params("id")
 
@@ -135,6 +140,7 @@ func main() {
 		return c.Status(200).JSON(employee)
 
 	})
+
 	app.Delete("/employee/:id", func(c *fiber.Ctx) error {
 
 		employeeID, err := primitive.ObjectIDFromHex(c.Params("id"))
